@@ -1,0 +1,27 @@
+digraph G {
+  rankdir=BT; fontname="Helvetica"; node [shape=record, fontname="Helvetica", fontsize=10, style=filled, fillcolor="#FFFDE7"]; edge [fontname="Helvetica", fontsize=9];
+  Expediente [label="{«abstract»\nExpediente|- id_caso: int\l- nombre: str\l- ubicacion: str\l- estado: Estado\l- fecha_ingreso: date\l- voluntario: Voluntario\l- historial: list\l|+ especie(): str \{abstract\}\l+ requisitos_especiales(): list \{abstract\}\l+ cambiar_estado(nuevo: Estado)\l}"];
+  Perro [label="{ExpedientePerro|+ especie = \"Perro\"\l|+ requisitos_especiales()\l}"];
+  Gato [label="{ExpedienteGato|+ especie = \"Gato\"\l|+ requisitos_especiales()\l}"];
+  Fauna [label="{ExpedienteFaunaSilvestre|+ especie = \"Fauna Silvestre\"\l|+ requisitos_especiales()\l}"];
+  Perro -> Expediente [arrowhead=empty]; Gato -> Expediente [arrowhead=empty]; Fauna -> Expediente [arrowhead=empty];
+  Estado [label="{«enumeration»\nEstado|RESCATADO\lEN_TRATAMIENTO\lADOPCION\lADOPTADO\l}", fillcolor="#E1F5FE"];
+  Expediente -> Estado [arrowhead=vee, style=dashed, label="usa"];
+  EFactory [label="{«abstract»\nExpedienteFactory||+ crear_expediente(id, nombre, ubic): Expediente\l}", fillcolor="#E8F5E9"];
+  PF [label="{PerroFactory||+ crear_expediente()\l}", fillcolor="#E8F5E9"]; GF [label="{GatoFactory||+ crear_expediente()\l}", fillcolor="#E8F5E9"]; FF [label="{FaunaSilvestreFactory||+ crear_expediente()\l}", fillcolor="#E8F5E9"];
+  PF -> EFactory [arrowhead=empty]; GF -> EFactory [arrowhead=empty]; FF -> EFactory [arrowhead=empty];
+  EFactory -> Expediente [arrowhead=vee, style=dashed, label="«crea»"];
+  Sujeto [label="{Sujeto|- _observadores: list\l|+ suscribir(obs)\l+ desuscribir(obs)\l+ notificar(expediente)\l}", fillcolor="#FCE4EC"];
+  Observador [label="{«interface»\nObservador||+ actualizar(expediente)\l}", fillcolor="#FCE4EC"];
+  Voluntario [label="{Voluntario|+ nombre: str\l+ es_veterinario: bool\l+ bandeja: list\l|+ actualizar(expediente)\l}", fillcolor="#FCE4EC"];
+  Voluntario -> Observador [arrowhead=empty, style=dashed];
+  Sujeto -> Observador [arrowhead=odiamond, label="0..*"];
+  Gestor [label="{GestorCasos «Singleton»|- _instancia: GestorCasos \{static\}\l- _casos: dict\l|+ GestorCasos(): GestorCasos\l+ registrar_rescate(especie, nombre, ubic)\l+ asignar_voluntario(id, voluntario)\l+ cambiar_estado(id, estado)\l+ listar(estado): list\l}", fillcolor="#FFE0B2"];
+  Gestor -> Sujeto [arrowhead=empty];
+  Gestor -> Expediente [arrowhead=diamond, label="1..*  gestiona"];
+  Gestor -> EFactory [arrowhead=vee, style=dashed, label="usa"];
+  Expediente -> Voluntario [arrowhead=vee, label="0..1 asignado a"];
+  Controlador [label="{ControladorRescate «Controller»||+ reportar()\l+ asignar()\l+ avanzar()\l+ reporte()\l}", fillcolor="#EDE7F6"];
+  Vista [label="{VistaConsola «View»||+ mostrar_caso(e)\l+ mostrar_lista(casos)\l}", fillcolor="#EDE7F6"];
+  Controlador -> Gestor [arrowhead=vee, label="Model"]; Controlador -> Vista [arrowhead=vee];
+}

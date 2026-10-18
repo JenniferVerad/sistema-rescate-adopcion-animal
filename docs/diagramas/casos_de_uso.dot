@@ -1,0 +1,21 @@
+digraph G {
+  rankdir=LR; fontname="Helvetica"; node [fontname="Helvetica", fontsize=11]; edge [fontname="Helvetica", fontsize=9];
+  subgraph cluster_sys { label="Sistema de Control de Rescate y Adopción Animal"; style=rounded; color="#555555";
+    node [shape=ellipse, style=filled, fillcolor="#FFF9C4"];
+    CU1 [label="CU1\nReportar rescate"]; CU2 [label="CU2\nCategorizar especie"];
+    CU3 [label="CU3\nAsignar voluntario"]; CU4 [label="CU4\nActualizar estado\ndel caso"];
+    CU5 [label="CU5\nRegistrar tratamiento\nveterinario"]; CU6 [label="CU6\nGestionar adopción"];
+    CU7 [label="CU7\nConsultar casos"]; CU8 [label="CU8\nNotificar a voluntarios"];
+    CU9 [label="CU9\nGenerar reportes"];
+  }
+  node [shape=box, style=filled, fillcolor="#C8E6C9"];
+  Ciudadano [label="«actor»\nCiudadano /\nReportante"]; Voluntario [label="«actor»\nVoluntario"];
+  Vet [label="«actor»\nVeterinario"]; Admin [label="«actor»\nAdministrador\ndel Refugio"];
+  Ciudadano -> CU1; Ciudadano -> CU7;
+  Voluntario -> CU4; Voluntario -> CU7;
+  Vet -> CU5; Vet -> CU4;
+  Admin -> CU3; Admin -> CU6; Admin -> CU9; Admin -> CU7;
+  CU1 -> CU2 [label="«include»", style=dashed];
+  CU1 -> CU8 [label="«include»", style=dashed];
+  CU6 -> CU4 [label="«include»", style=dashed];
+}
