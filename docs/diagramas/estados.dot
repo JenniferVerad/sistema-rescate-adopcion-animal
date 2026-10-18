@@ -1,0 +1,4 @@
+digraph G { rankdir=LR; node [shape=box, style="rounded,filled", fillcolor="#FFF9C4", fontname="Helvetica"]; edge [fontname="Helvetica", fontsize=9];
+ start [shape=circle, label="", width=0.2, style=filled, fillcolor=black];
+ start -> R; R [label="Rescatado"]; T [label="En Tratamiento"]; A [label="Adopción"]; D [label="Adoptado"];
+ R -> T [label="evaluación vet."]; T -> A [label="alta médica"]; A -> D [label="adopción aprobada"]; R -> A [label="sano, sin tratamiento"]; }
